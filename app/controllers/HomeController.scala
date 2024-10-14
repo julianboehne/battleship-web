@@ -27,11 +27,88 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index() = Action { implicit request: Request[AnyContent] =>
+  def getGrid() = Action { implicit request: Request[AnyContent] =>
     val text = controller.toString
     val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
     val html: Html = Html(htmlText)
     Ok(views.html.main(title = "Battleship")(content = html))
-//    Ok(views.html.index())
   }
+
+  def isLost() = Action { implicit request: Request[AnyContent] =>
+    val text = controller.isLost.toString
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "isLost")(content = html))
+  }
+
+  def GridShipToString() = Action { implicit request: Request[AnyContent] =>
+    val text = controller.GridShipToString
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "GridShipToString")(content = html))
+  }
+
+  def undo() = Action { implicit request: Request[AnyContent] =>
+    controller.undo()
+    val text = "undo"
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "undo")(content = html))
+  }
+
+  def redo() = Action { implicit request: Request[AnyContent] =>
+    controller.redo()
+    val text = "redo"
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "redo")(content = html))
+  }
+
+  def autoShips() = Action { implicit request: Request[AnyContent] =>
+    val text = controller.autoShips().toString
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "autoShips")(content = html))
+  }
+
+  def setPlayerName(name: String) = Action { implicit request: Request[AnyContent] =>
+    controller.setPlayerName(name)
+    val text = "new Player: " + name
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "setPlayerName")(content = html))
+  }
+
+  def isValid(cords: String) = Action { implicit request: Request[AnyContent] =>
+    val text = controller.isValid(cords).toString
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "isValid")(content = html))
+  }
+
+  def load() = Action { implicit request: Request[AnyContent] =>
+    controller.loadGame()
+    val text = "loaded"
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "load")(content = html))
+  }
+
+  def save() = Action { implicit request: Request[AnyContent] =>
+    controller.saveGame()
+    val text = "saved"
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "save")(content = html))
+  }
+
+  def reset() = Action { implicit request: Request[AnyContent] =>
+    controller.resetGame()
+    val text = "reseted"
+    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+    val html: Html = Html(htmlText)
+    Ok(views.html.main(title = "reset")(content = html))
+  }
+
+
 }
