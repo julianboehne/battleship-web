@@ -11,11 +11,11 @@ GET     /game/GridShipToString          controllers.HomeController.GridShipToStr
 GET     /game/undo                      controllers.HomeController.undo()
 GET     /game/redo                      controllers.HomeController.redo()
 GET     /game/autoShips                 controllers.HomeController.autoShips()
-PATCH   /game/setPlayerName/:name       controllers.HomeController.setPlayerName(name: String)
-PATCH   /game/isValid/:cords            controllers.HomeController.isValid(cords: String)
-PATCH   /game/load                      controllers.HomeController.load()
-PATCH   /game/save                      controllers.HomeController.save()
-PATCH   /game/reset                     controllers.HomeController.reset()
+GET     /game/setPlayerName/:name       controllers.HomeController.setPlayerName(name: String)
+GET     /game/isValid/:cords            controllers.HomeController.isValid(cords: String)
+GET     /game/load                      controllers.HomeController.load()
+GET     /game/save                      controllers.HomeController.save()
+GET     /game/reset                     controllers.HomeController.reset()
 
 
 # Map static resources from the /public folder to the /assets URL path

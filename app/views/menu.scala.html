@@ -16,14 +16,113 @@
 
     </head>
     <body>
-        <td>
-            <p>Menu html<br>
-            </p>
-        </td>
-        @* And here's where we render the `Html` object containing
-        * the page content. *@
-        @content
+        <h1>@title</h1>
 
+            <!-- Statusanzeige für isLost -->
+        <div>
+            <p>Status: @content</p>
+        </div>
+
+            <!-- Button für undo -->
+        <div>
+            <button id="undoButton">Undo</button>
+        </div>
+
+            <!-- Button für redo -->
+        <div>
+            <button id="redoButton">Redo</button>
+        </div>
+
+            <!-- Button für autoShips -->
+        <div>
+            <button id="autoShipsButton">Auto Ships</button>
+        </div>
+
+            <!-- Eingabefeld und Button für setPlayerName -->
+        <div>
+            <input type="text" id="playerNameInput" placeholder="Spielername eingeben">
+            <button id="setPlayerNameButton">Set Player Name</button>
+        </div>
+
+            <!-- Eingabefeld und Button für isValid -->
+        <div>
+            <input type="text" id="coordinatesInput" placeholder="Koordinaten eingeben">
+            <button id="isValidButton">Check Validity</button>
+        </div>
+
+            <!-- Button für load -->
+        <div>
+            <button id="loadButton">Load</button>
+        </div>
+
+            <!-- Button für save -->
+        <div>
+            <button id="saveButton">Save</button>
+        </div>
+
+            <!-- Button für reset -->
+        <div>
+            <button id="resetButton">Reset</button>
+        </div>
+
+            <!-- JavaScript -->
         <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+
+        <script type="text/javascript">
+                let saveButton = document.getElementById('saveButton');
+                let undoButton = document.getElementById('undoButton');
+                let redoButton = document.getElementById('redoButton');
+                let autoShipsButton = document.getElementById('autoShipsButton');
+                let setPlayerNameButton = document.getElementById('setPlayerNameButton');
+                let isValidButton = document.getElementById('isValidButton');
+                let loadButton = document.getElementById('loadButton');
+                let resetButton = document.getElementById('resetButton');
+
+                let playerInput = document.getElementById('playerNameInput');
+                let coordinatesInput = document.getElementById('coordinatesInput');
+
+
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    undoButton.addEventListener('click', function () {
+                        undo();
+                    });
+
+                    redoButton.addEventListener('click', function () {
+                        redo();
+                    });
+
+                    autoShipsButton.addEventListener('click', function () {
+                        autoShips();
+                    });
+
+                    setPlayerNameButton.addEventListener('click', function () {
+                        const name = playerInput.value;
+                        if (name) {
+                            setPlayerName(name);
+                        }
+                    });
+
+                    isValidButton.addEventListener('click', function () {
+                        const cords = coordinatesInput.value;
+                        if (cords) {
+                            isValid(cords);
+                        }
+                    });
+
+                    loadButton.addEventListener('click', function () {
+                        loadGame();
+                    });
+
+                    saveButton.addEventListener('click', function () {
+                        saveGame();
+                    });
+
+                    resetButton.addEventListener('click', function () {
+                        resetGame();
+                    });
+                });
+        </script>
+
     </body>
 </html>
