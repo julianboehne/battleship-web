@@ -4,7 +4,8 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                               controllers.HomeController.getGrid()
+GET     /                               controllers.HomeController.welcome()
+GET     /game/grid                      controllers.HomeController.getGrid()
 GET     /game/isLost                    controllers.HomeController.isLost()
 GET     /game/GridShipToString          controllers.HomeController.GridShipToString()
 GET     /game/undo                      controllers.HomeController.undo()
