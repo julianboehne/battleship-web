@@ -32,10 +32,13 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   }
 
   def getGrid() = Action { implicit request: Request[AnyContent] =>
-    val text = controller.toString
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    Ok(views.html.field(title = "Battleship")(content = html))
+    val size = controller.grid.size
+    val board = controller.grid.getBoard
+    //controller.grid.shots.X.size
+
+//    val htmlText = s"<pre>${text.replace("    ", """<button>&nbsp;</button>""").replace("\n", "<br>")}</pre>"
+//    val html: Html = Html(htmlText)
+    Ok(views.html.field(title = "Battleship Grid")(size = size)(board = board))
   }
 
   def isLost() = Action { implicit request: Request[AnyContent] =>
@@ -46,10 +49,13 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   }
 
   def GridShipToString() = Action { implicit request: Request[AnyContent] =>
-    val text = controller.GridShipToString
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    Ok(views.html.shipfield(title = "GridShipToString")(content = html))
+//    val text = controller.GridShipToString
+//    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
+//    val html: Html = Html(htmlText)
+    val size = controller.grid.size
+    val board = controller.grid.getBoard
+
+    Ok(views.html.shipfield(title = "Battleship Grid")(size = size)(board = board))
   }
 
   def undo() = Action { implicit request: Request[AnyContent] =>

@@ -1,10 +1,4 @@
-@*
-* This template is called from the `index` template. This template
-* handles the rendering of the page header and body tags. It takes
-* two arguments, a `String` for the title of the page and an `Html`
-* object to insert into the body of the page.
-*@
-@(title: String)(content: Html)
+@(title: String)(size: Int)(board: Vector[String])
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,14 +10,54 @@
 
   </head>
   <body>
-    <td>
-      <p>shipfield html<br>
-      </p>
-    </td>
-    @* And here's where we render the `Html` object containing
-    * the page content. *@
-    @content
 
-    <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+    <h1>Battleship Shipfield</h1>
+
+    <table>
+      <tr>
+        <td>
+            <!-- Spielfeld 1 -->
+          <h2>Player 1</h2>
+          <table border="2">
+            <tr>
+              <td></td>
+              @for(i <- 0 until size) {
+                <td>@(('A'.toInt + i).toChar)</td>
+              }
+            </tr>
+            @for(row <- 1 to size) {
+              <tr>
+                <td>@row</td>
+                @for(col <- 0 until size) {
+                  <td><button>@board((row - 1) * size + col)</button></td>
+                }
+              </tr>
+            }
+          </table>
+        </td>
+
+          <!-- Spielfeld 2 -->
+        <td style="padding-left: 50px;">
+          <h2>Player 2</h2>
+          <table border="2">
+            <tr>
+              <td></td>
+              @for(i <- 0 until size) {
+                <td>@(('A'.toInt + i).toChar)</td>
+              }
+            </tr>
+            @for(row <- 1 to size) {
+              <tr>
+                <td>@row</td>
+                @for(col <- 0 until size) {
+                  <td><button>@board((row - 1) * size + col)</button></td>
+                }
+              </tr>
+            }
+          </table>
+        </td>
+      </tr>
+    </table>
+
   </body>
 </html>
