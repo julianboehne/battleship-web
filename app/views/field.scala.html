@@ -1,4 +1,4 @@
-@(title: String)(size: Int)(board: Vector[String])
+@(title: String)(size: Int)(board: Vector[String])(pl1_x_shots: Vector[Int], pl1_y_shots: Vector[Int], pl2_x_shots: Vector[Int], pl2_y_shots: Vector[Int])
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,9 +8,9 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
 
+
   </head>
   <body>
-
     <h1>Battleship Grid</h1>
 
     <table>
@@ -29,15 +29,24 @@
               <tr>
                 <td>@row</td>
                 @for(col <- 0 until size) {
-                  <td><button>@board((row - 1) * size + col)</button></td>
+                  @* Prüfen, ob die aktuelle Position in den Schusskoordinaten von Player 1 enthalten ist *@
+                  <td>
+                    <button onclick="addShot(1, @col, @(row - 1))">
+                    @if(pl1_x_shots.zip(pl1_y_shots).contains((col, row - 1))) {
+                      X
+                    } else {
+                      @board((row - 1) * size + col)
+                    }
+                    </button>
+                  </td>
                 }
               </tr>
             }
           </table>
         </td>
 
-          <!-- Spielfeld 2 -->
         <td style="padding-left: 50px;">
+            <!-- Spielfeld 2 -->
           <h2>Player 2</h2>
           <table border="2">
             <tr>
@@ -50,7 +59,16 @@
               <tr>
                 <td>@row</td>
                 @for(col <- 0 until size) {
-                  <td><button>@board((row - 1) * size + col)</button></td>
+                  @* Prüfen, ob die aktuelle Position in den Schusskoordinaten von Player 2 enthalten ist *@
+                  <td>
+                    <button onclick="addShot(2, @col, @(row - 1))">
+                    @if(pl2_x_shots.zip(pl2_y_shots).contains((col, row - 1))) {
+                      X
+                    } else {
+                      @board((row - 1) * size + col)
+                    }
+                    </button>
+                  </td>
                 }
               </tr>
             }
@@ -59,5 +77,25 @@
       </tr>
     </table>
 
+    <h3>Shot Vectors</h3>
+    <p><strong>Player 1 X Shots:</strong> @pl1_x_shots.mkString(", ")</p>
+    <p><strong>Player 1 Y Shots:</strong> @pl1_y_shots.mkString(", ")</p>
+    <p><strong>Player 2 X Shots:</strong> @pl2_x_shots.mkString(", ")</p>
+    <p><strong>Player 2 Y Shots:</strong> @pl2_y_shots.mkString(", ")</p>
+
+    <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+
+@*    <script type="text/javascript">*@
+@*            let shotButton = document.getElementById('shotButton');*@
+
+@*            document.addEventListener("DOMContentLoaded", function () {*@
+
+@*              shotButton.addEventListener('click', function () {*@
+@*                resetGame();*@
+@*              });*@
+@*            });*@
+@*    </script>*@
+
   </body>
+
 </html>
