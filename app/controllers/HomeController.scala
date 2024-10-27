@@ -59,8 +59,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def addShips2() = Action { implicit request: Request[AnyContent] =>
     val size = controller.grid.size
     val board = controller.grid.getBoard
+    val ships_x : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.x)
+    val ships_y : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.y)
 
-    Ok(views.html.shipfield2(title = "Battleship Grid")(size = size)(board = board))
+    Ok(views.html.shipfield2(title = "Battleship Grid")(size = size)(board = board)(ships_x = ships_x, ships_y = ships_y))
   }
 
   def undo() = Action { implicit request: Request[AnyContent] =>
