@@ -2,62 +2,63 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    @* Here's where we render the page title `String`. *@
-    <title>@title</title>
-    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-    <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    <head>
+        @* Here's where we render the page title `String`. *@
+        <title>@title</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
 
-  </head>
-  <body>
+    </head>
+    <body>
 
-    <h1>Battleship Grid</h1>
+        <h1>Battleship Grid</h1>
 
-    <table>
-      <tr>
-        <td>
-            <!-- Spielfeld 1 -->
-          <h2>Player 1</h2>
-          <table border="2">
+        <table>
             <tr>
-              <td></td>
-              @for(i <- 0 until size) {
-                <td>@(('A'.toInt + i).toChar)</td>
-              }
-            </tr>
-            @for(row <- 1 to size) {
-              <tr>
-                <td>@row</td>
-                @for(col <- 0 until size) {
-                  <td><button>@board((row - 1) * size + col)</button></td>
-                }
-              </tr>
-            }
-          </table>
-        </td>
+                <td class="Spielfeld">
+                        <!-- Spielfeld 1 -->
+                    <h2>Player 1</h2>
+                    <table class="innerTable">
+                        <tr>
+                            <td></td>
+                            @for(i <- 0 until size) {
+                                <td>@(('A'.toInt + i).toChar)</td>
+                            }
+                        </tr>
+                        @for(row <- 1 to size) {
+                            <tr>
+                                <td>@row</td>
+                                @for(col <- 0 until size) {
+                                    <td><button>@board((row - 1) * size + col)</button></td>
+                                }
+                            </tr>
+                        }
+                    </table>
+                </td>
 
-          <!-- Spielfeld 2 -->
-        <td style="padding-left: 50px;">
-          <h2>Player 2</h2>
-          <table border="2">
-            <tr>
-              <td></td>
-              @for(i <- 0 until size) {
-                <td>@(('A'.toInt + i).toChar)</td>
-              }
+                    <!-- Spielfeld 2 -->
+                <td class="Spielfeld">
+                    <h2>Player 2</h2>
+                    <table class="innerTable">
+                        <tr>
+                            <td></td>
+                            @for(i <- 0 until size) {
+                                <td>@(('A'.toInt + i).toChar)</td>
+                            }
+                        </tr>
+                        @for(row <- 1 to size) {
+                            <tr>
+                                <td>@row</td>
+                                @for(col <- 0 until size) {
+                                    <td><button>@board((row - 1) * size + col)</button></td>
+                                }
+                            </tr>
+                        }
+                    </table>
+                </td>
             </tr>
-            @for(row <- 1 to size) {
-              <tr>
-                <td>@row</td>
-                @for(col <- 0 until size) {
-                  <td><button>@board((row - 1) * size + col)</button></td>
-                }
-              </tr>
-            }
-          </table>
-        </td>
-      </tr>
-    </table>
+        </table>
 
-  </body>
+    </body>
 </html>
