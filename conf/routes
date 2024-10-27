@@ -7,7 +7,8 @@
 GET     /                               controllers.HomeController.welcome()
 GET     /game/grid                      controllers.HomeController.getGrid()
 GET     /game/isLost                    controllers.HomeController.isLost()
-GET     /game/GridShipToString          controllers.HomeController.GridShipToString()
+GET     /game/addShips1                 controllers.HomeController.addShips1()
+GET     /game/addShips2                 controllers.HomeController.addShips2()
 GET     /game/undo                      controllers.HomeController.undo()
 GET     /game/redo                      controllers.HomeController.redo()
 GET     /game/autoShips                 controllers.HomeController.autoShips()
@@ -21,6 +22,10 @@ GET     /game/reset                     controllers.HomeController.reset()
 POST    /game/player1/addShot           controllers.HomeController.player1AddShot()
 +nocsrf
 POST    /game/player2/addShot           controllers.HomeController.player2AddShot()
++nocsrf
+POST    /game/player1/addShip          controllers.HomeController.player1AddShip()
++nocsrf
+POST    /game/player2/addShip          controllers.HomeController.player2AddShip()
 
 
 # Map static resources from the /public folder to the /assets URL path

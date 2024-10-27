@@ -130,3 +130,25 @@ function addShot(player, x, y) {
         console.error("Request-Fehler:", error);
     });
 }
+
+
+function addShip(player, cords1, cords2) {
+    const url = `/game/player${player}/addShip`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ first: cords1, second: cords2 })
+    }).then(response => {
+        if (!response.ok) {
+            console.error("Fehler beim Hinzufügen des Schiffs für Spieler " + player);
+            location.reload();
+        } else {
+            location.reload();
+        }
+    }).catch(error => {
+        console.error("Request-Fehler:", error);
+    });
+}
