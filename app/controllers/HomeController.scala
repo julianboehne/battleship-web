@@ -52,8 +52,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def addShips1() = Action { implicit request: Request[AnyContent] =>
     val size = controller.grid.size
     val board = controller.grid.getBoard
+    val ships_x : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.x)
+    val ships_y : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.y)
 
-    Ok(views.html.shipfield1(title = "Battleship Grid")(size = size)(board = board))
+    Ok(views.html.shipfield1(title = "Battleship Grid")(size = size)(board = board)(ships_x = ships_x, ships_y = ships_y))
   }
 
   def addShips2() = Action { implicit request: Request[AnyContent] =>

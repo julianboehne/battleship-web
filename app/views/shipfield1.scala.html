@@ -1,4 +1,4 @@
-@(title: String)(size: Int)(board: Vector[String])
+@(title: String)(size: Int)(board: Vector[String])(ships_x: Vector[Int], ships_y: Vector[Int])
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +35,11 @@
                 @for(col <- 0 until size) {
                   <td>
                     <button class="shipButton btn btn-outline-primary">
-                    @board((row - 1) * size + col)
+                    @if(ships_x.zip(ships_y).contains((col+1, row))) {
+                      🚢
+                    } else {
+                      @board((row - 1) * size + col)
+                    }
                     </button>
                   </td>
                 }
