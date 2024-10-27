@@ -55,7 +55,7 @@
                 <td>@row</td>
                 @for(col <- 0 until size) {
                   <td>
-                    <button id="shipButton">
+                    <button class="shipButton">
                     @board((row - 1) * size + col)
                     </button>
                   </td>
@@ -68,14 +68,13 @@
     </table>
 
     <script type="text/javascript">
-            let shipButton = document.getElementById('shipButton');
+            const shipButtons = document.querySelectorAll('.shipButton');
 
             let input1 = "";
             let input2 = "";
 
 
-            document.addEventListener("DOMContentLoaded", function () {
-
+            shipButtons.forEach(shipButton => {
               shipButton.addEventListener('click', function () {
 
                 if (input1 === "" && input2 === "") {
@@ -85,12 +84,13 @@
                   input2 = shipButton.textContent;
                   shipButton.textContent = '🚢';
                   addShip(2, input1, input2);
-                  input1 = "";
-                  input2 = "";
-                }
 
+                }
               });
+
+
             });
+
     </script>
 
 
