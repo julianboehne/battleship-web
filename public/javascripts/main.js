@@ -109,3 +109,24 @@ function resetGame() {
     };
     xhr.send(JSON.stringify(''));
 }
+
+function addShot(player, x, y) {
+    console.log("Test")
+    let url = player === 1 ? 'http://localhost:9000/game/player1/addShot' : 'http://localhost:9000/game/player2/addShot';
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ x: x, y: y })
+    }).then(response => {
+        if (response.ok) {
+            location.reload();
+        } else {
+            console.error("Fehler beim Hinzufügen des Schusses für Spieler " + player);
+        }
+    }).catch(error => {
+        console.error("Request-Fehler:", error);
+    });
+}

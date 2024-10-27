@@ -8,6 +8,7 @@ import core.controller.ControllerInterface
 import core.controller.controllerImpl.{APIController, Controller, KafkaConsumer}
 import core.model.gridImpl.{Grid, Ship, ShipContainer, Shots}
 import play.twirl.api.Html
+import play.api.libs.json._
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -34,11 +35,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def getGrid() = Action { implicit request: Request[AnyContent] =>
     val size = controller.grid.size
     val board = controller.grid.getBoard
-    //controller.grid.shots.X.size
-
-//    val htmlText = s"<pre>${text.replace("    ", """<button>&nbsp;</button>""").replace("\n", "<br>")}</pre>"
-//    val html: Html = Html(htmlText)
-    Ok(views.html.field(title = "Battleship Grid")(size = size)(board = board))
+    val pl1_x_shots = controller.player1.grid.shots.X
+    val pl1_y_shots = controller.player1.grid.shots.Y
+    val pl2_x_shots = controller.player2.grid.shots.X
+    val pl2_y_shots = controller.player2.grid.shots.Y
+    Ok(views.html.field(title = "Battleship Grid")(size = size)(board = board)(pl1_x_shots = pl1_x_shots, pl1_y_shots = pl1_y_shots, pl2_x_shots = pl2_x_shots, pl2_y_shots = pl2_y_shots))
   }
 
   def isLost() = Action { implicit request: Request[AnyContent] =>
@@ -118,6 +119,48 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
     val html: Html = Html(htmlText)
     Ok(views.html.menu(title = "reset")(content = html))
+  }
+
+  def player1AddShot(): Action[AnyContent] = Action { implicit request =>
+    // Versuch, die Koordinaten aus verschiedenen Eingabemethoden zu lesen
+    val xCoord = request.body.asFormUrlEncoded.flatMap(_.get("x").flatMap(_.headOption)).map(_.toInt)
+      .orElse(request.body.asJson.flatMap(json => (json \ "x").asOpt[Int]))
+      .orElse(request.getQueryString("x").map(_.toInt))
+
+    val yCoord = request.body.asFormUrlEncoded.flatMap(_.get("y").flatMap(_.headOption)).map(_.toInt)
+      .orElse(request.body.asJson.flatMap(json => (json \ "y").asOpt[Int]))
+      .orElse(request.getQueryString("y").map(_.toInt))
+
+    (xCoord, yCoord) match {
+      case (Some(x), Some(y)) =>
+        // Koordinate wird hinzugefügt
+        controller.state = controller.player1
+        controller.addShot(x, y)
+        Ok(Json.obj("status" -> "success", "message" -> s"Player1 Shot added at ($x, $y)"))
+      case _ =>
+        BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
+    }
+  }
+
+  def player2AddShot(): Action[AnyContent] = Action { implicit request =>
+    // Versuch, die Koordinaten aus verschiedenen Eingabemethoden zu lesen
+    val xCoord = request.body.asFormUrlEncoded.flatMap(_.get("x").flatMap(_.headOption)).map(_.toInt)
+      .orElse(request.body.asJson.flatMap(json => (json \ "x").asOpt[Int]))
+      .orElse(request.getQueryString("x").map(_.toInt))
+
+    val yCoord = request.body.asFormUrlEncoded.flatMap(_.get("y").flatMap(_.headOption)).map(_.toInt)
+      .orElse(request.body.asJson.flatMap(json => (json \ "y").asOpt[Int]))
+      .orElse(request.getQueryString("y").map(_.toInt))
+
+    (xCoord, yCoord) match {
+      case (Some(x), Some(y)) =>
+        // Koordinate wird hinzugefügt
+        controller.state = controller.player2
+        controller.addShot(x, y)
+        Ok(Json.obj("status" -> "success", "message" -> s"Player2 Shot added at ($x, $y)"))
+      case _ =>
+        BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
+    }
   }
 
 
