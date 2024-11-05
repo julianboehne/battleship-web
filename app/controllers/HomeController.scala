@@ -231,4 +231,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   }
 
 
+  def shipsReady(player: Int) = Action { implicit request: Request[AnyContent] =>
+    if (player == 1) Ok(Json.obj("status" -> "success", "ready" -> !controller.player1.grid.ships.shipCountValid()))
+    else Ok(Json.obj("status" -> "success", "ready" -> !controller.player2.grid.ships.shipCountValid()))
+  }
+
+
 }

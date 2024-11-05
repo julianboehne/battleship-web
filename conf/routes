@@ -17,6 +17,7 @@ GET     /game/isValid/:cords            controllers.HomeController.isValid(cords
 GET     /game/load                      controllers.HomeController.load()
 GET     /game/save                      controllers.HomeController.save()
 GET     /game/reset                     controllers.HomeController.reset()
+GET     /game/shipsReady/:player        controllers.HomeController.shipsReady(player: Int)
 
 +nocsrf
 POST    /game/player1/addShot           controllers.HomeController.player1AddShot()

@@ -146,9 +146,49 @@ function addShip(player, cords1, cords2) {
             console.error("Fehler beim Hinzufügen des Schiffs für Spieler " + player);
             location.reload();
         } else {
+            shipsReady(player).then((isReady) => {
+                if (isReady) {
+                    if (player === 1) window.location.href = 'http://localhost:9000/game/addShips2'
+                    else window.location.href = 'http://localhost:9000/game/grid'
+                }
+            }).catch((error) => {
+                console.error("Error:", error);
+            });
             location.reload();
         }
     }).catch(error => {
         console.error("Request-Fehler:", error);
+    });
+}
+
+function shipsReady(player) {
+    return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        let url = 'http://localhost:9000/game/shipsReady/' + player;
+
+        xhr.open('GET', url, true);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                try {
+                    // Parse the JSON response
+                    let response = JSON.parse(xhr.responseText);
+                    // Resolve the Promise with the 'ready' boolean value
+                    resolve(response.ready);
+                } catch (error) {
+                    // Reject if JSON parsing fails
+                    reject("Parsing error: " + error.message);
+                }
+            } else {
+                // Reject if the response status is not 200
+                reject("Error: status code " + xhr.status);
+            }
+        };
+
+        xhr.onerror = function () {
+            reject("Request error");
+        };
+
+        xhr.send();
     });
 }
