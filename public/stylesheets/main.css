@@ -101,11 +101,24 @@ td button {
     .Spielfeld {
         display: block;
         width: 100%;
-        margin-bottom: 500px;
+        margin-bottom: 20vh;
     }
 
     .Spielfeld table {
         margin: 0 auto;
+    }
+
+    .Spielfeld td, .Spielfeld th {
+        min-width: 20px;
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+
+    .Spielfeld td button {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
     }
 }
 /*!* Hover-Effekt *!
