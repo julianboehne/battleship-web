@@ -96,6 +96,18 @@ td button {
     margin: 10px auto;
     width: 250px;
 }
+
+@media (max-width: 768px) {
+    .Spielfeld {
+        display: block;
+        width: 100%;
+        margin-bottom: 500px;
+    }
+
+    .Spielfeld table {
+        margin: 0 auto;
+    }
+}
 /*!* Hover-Effekt *!
 td button:hover {
     background-color: #dcdde1;
