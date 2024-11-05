@@ -97,11 +97,11 @@ td button {
     width: 250px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1080px) {
     .Spielfeld {
         display: block;
         width: 100%;
-        margin-bottom: 20vh;
+        margin-bottom: max(20vh, 250px);
     }
 
     .Spielfeld table {
