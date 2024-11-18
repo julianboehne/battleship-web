@@ -16,16 +16,15 @@ $(document).ready(function () {
             // Check if ships are ready by awaiting the result of shipsReady
             const isReady = await shipsReady(player);
 
-            console.log("Ships are ready:", isReady);
-
             // Redirect based on readiness status
-            if (isReady === true) {
-                if (parseInt(player) === 1) {
+            if (isReady) {
+                if (player === 1) {
                     window.location.href = '/game/addShips2';
-                    console.log("hier kommt er nicht rein");
                 } else {
                     window.location.href = '/game/grid';
                 }
+            } else {
+                location.reload();
             }
         } catch (error) {
             console.error("Error in addShip:", error);
@@ -58,7 +57,7 @@ $(document).ready(function () {
             input2 = $(this).text();
             $(this).text('🚢');
             await addShip(1, input1, input2);
-            location.reload();
+
         }
     });
 
@@ -70,7 +69,6 @@ $(document).ready(function () {
             input2 = $(this).text();
             $(this).text('🚢');
             await addShip(2, input1, input2);
-            location.reload();
         }
     });
 
