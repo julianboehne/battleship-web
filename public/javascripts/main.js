@@ -68,19 +68,19 @@ function autoShips() {
     xhr.send(JSON.stringify(''));
 }
 
-function loadGame() {
-    let xhr = new XMLHttpRequest();
-    let url = 'http://localhost:9000/game/load';
-    xhr.open('GET', url, true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            location.reload()
-        } else {
-            console.error("error load " + xhr.status);
-        }
-    };
-    xhr.send(JSON.stringify(''));
-}
+// function loadGame() {
+//     let xhr = new XMLHttpRequest();
+//     let url = 'http://localhost:9000/game/load';
+//     xhr.open('GET', url, true);
+//     xhr.onload = function () {
+//         if (xhr.status === 200) {
+//             location.reload()
+//         } else {
+//             console.error("error load " + xhr.status);
+//         }
+//     };
+//     xhr.send(JSON.stringify(''));
+// }
 
 function saveGame() {
     let xhr = new XMLHttpRequest();
