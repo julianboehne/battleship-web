@@ -234,7 +234,6 @@ function connectWebSocket() {
     };
 
     websocket.onmessage = function(event) {
-        switch (e.data) {
         try {
             switch (event.data) {
                 case "reloadAll":
@@ -259,3 +258,5 @@ function connectWebSocket() {
 
     return websocket;
 }
+
+document.addEventListener('DOMContentLoaded', connectWebSocket);

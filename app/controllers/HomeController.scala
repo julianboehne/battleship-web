@@ -280,8 +280,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     reactions += {
       case event: ReloadAll => out ! ("reloadAll")
       case event: ReloadGame => out ! ("reloadGame")
-      case event: ReloadShots => out ! ("ReloadShots")
-      case event: ReloadShips => out ! ("ReloadShips")
+      case event: ReloadShots => out ! ("reloadShots")
+      case event: ReloadShips => out ! ("reloadShips")
     }
   }
 
