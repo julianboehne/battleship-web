@@ -9,7 +9,7 @@ import core.model.gridImpl.{Grid, Ship, ShipContainer, Shots}
 import play.twirl.api.Html
 import play.api.libs.json._
 
-import akka.actor._
+import org.apache.pekko.actor._
 import play.api.libs.streams.ActorFlow
 import scala.swing.Reactor
 /**

@@ -192,3 +192,37 @@ function shipsReady(player) {
         xhr.send();
     });
 }
+
+
+function connectWebSocket() {
+    var websocket = new WebSocket("ws://localhost:9000/websocket");
+    websocket.setTimeout
+
+    websocket.onopen = function(event) {
+        console.log("Connected to Websocket");
+    }
+
+    websocket.onclose = function () {
+        console.log('Connection with Websocket Closed!');
+    };
+
+    websocket.onerror = function (error) {
+        console.log('Error in Websocket Occured: ' + error);
+    };
+
+    websocket.onmessage = function (e) {
+        switch (e.data) {
+            case "reloadAll": {
+                // TODO: Implement reloadALL and other reload functions
+                reloadGame()
+                reloadShips()
+                reloadShots()
+                break;
+            }
+            case "reloadGame": reloadGame(); break;
+            case "reloadShots": reloadShots(); break;
+            case "reloadShips": reloadShips(); break;
+            default: alert("non event massage " + e.data)
+        }
+    };
+}
