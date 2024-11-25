@@ -1,7 +1,6 @@
 package controllers
 
 import javax.inject._
-import play.api._
 import play.api.mvc._
 import aview.TUI
 import core.controller.ControllerInterface
@@ -10,16 +9,21 @@ import core.model.gridImpl.{Grid, Ship, ShipContainer, Shots}
 import play.twirl.api.Html
 import play.api.libs.json._
 
+import akka.actor._
+import play.api.libs.streams.ActorFlow
+import scala.swing.Reactor
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject()(val controllerComponents: ControllerComponents, implicit val system: ActorSystem) extends BaseController {
 
   private val grid: Grid = Grid(10, Shots(Vector[Int](), Vector[Int]()), ShipContainer(Vector[Ship]()))
   private val controller = new Controller(grid)
   private val tui: TUI = new TUI(controller)
+
+  private val publisher = new ControllerPublisher()
 
   /**
    * Create an Action to render an HTML page.
@@ -235,6 +239,35 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     if (player == 1) Ok(Json.obj("status" -> "success", "ready" -> !controller.player1.grid.ships.shipCountValid()))
     else Ok(Json.obj("status" -> "success", "ready" -> !controller.player2.grid.ships.shipCountValid()))
   }
+
+  def websocket = WebSocket.accept[String, String] { request =>
+    ActorFlow.actorRef { out =>
+      println("Connect received")
+      ActorFactory.create(out)
+    }
+  }
+
+  object ActorFactory {
+    def create(out: ActorRef) = {
+      Props(new WebSocketActor(out))
+    }
+  }
+
+  class WebSocketActor(out: ActorRef) extends Actor with Reactor {
+    listenTo(publisher)
+    def receive = {
+      case msg: String =>
+        out ! ("I received your message: " + msg)
+    }
+
+    reactions += {
+      case event: ReloadAll => out ! ("reloadAll")
+      case event: ReloadGame => out ! ("reloadGame")
+      case event: ReloadShots => out ! ("ReloadShots")
+      case event: ReloadShips => out ! ("ReloadShips")
+    }
+  }
+
 
 
 }
