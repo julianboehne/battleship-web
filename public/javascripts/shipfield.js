@@ -23,8 +23,6 @@ $(document).ready(function () {
                 } else {
                     window.location.href = '/game/grid';
                 }
-            } else {
-                location.reload();
             }
         } catch (error) {
             console.error("Error in addShip:", error);

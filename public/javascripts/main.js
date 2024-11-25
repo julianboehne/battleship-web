@@ -200,6 +200,7 @@ function reloadAll() {
 }
 
 function reloadGame() {
+    // ToDo richtige Seite laden
     console.log("reloadGame")
     location.reload();
 }
@@ -211,7 +212,8 @@ function reloadShots() {
 
 function reloadShips() {
     location.reload();
-    console.log("reloadShips")
+    // ToDo richtige Seite laden
+    location.href = 'http://localhost:9000/game/addShips1';
 }
 
 
