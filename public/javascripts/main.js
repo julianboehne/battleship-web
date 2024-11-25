@@ -132,7 +132,7 @@ function addShot(player, x, y) {
 }
 
 
-function addShip(player, cords1, cords2) {
+/*function addShip(player, cords1, cords2) {
     const url = `/game/player${player}/addShip`;
 
     fetch(url, {
@@ -191,6 +191,27 @@ function shipsReady(player) {
 
         xhr.send();
     });
+}*/
+
+function reloadAll() {
+    reloadGame();
+    reloadShips();
+    reloadShots();
+}
+
+function reloadGame() {
+    console.log("reloadGame")
+    location.reload();
+}
+
+function reloadShots() {
+    console.log("reloadShots")
+    location.reload();
+}
+
+function reloadShips() {
+    location.reload();
+    console.log("reloadShips")
 }
 
 
@@ -198,31 +219,43 @@ function connectWebSocket() {
     var websocket = new WebSocket("ws://localhost:9000/websocket");
     websocket.setTimeout
 
-    websocket.onopen = function(event) {
-        console.log("Connected to Websocket");
-    }
-
-    websocket.onclose = function () {
-        console.log('Connection with Websocket Closed!');
+    websocket.onopen = function() {
+        console.log("WebSocket Verbindung hergestellt");
     };
 
-    websocket.onerror = function (error) {
-        console.log('Error in Websocket Occured: ' + error);
+    websocket.onclose = function() {
+        console.log('WebSocket Verbindung geschlossen');
+        // Automatischer Reconnect nach 5 Sekunden
+        setTimeout(connectWebSocket, 5000);
     };
 
-    websocket.onmessage = function (e) {
+    websocket.onerror = function(error) {
+        console.error('WebSocket Fehler:', error);
+    };
+
+    websocket.onmessage = function(event) {
         switch (e.data) {
-            case "reloadAll": {
-                // TODO: Implement reloadALL and other reload functions
-                reloadGame()
-                reloadShips()
-                reloadShots()
-                break;
+        try {
+            switch (event.data) {
+                case "reloadAll":
+                    reloadAll();
+                    break;
+                case "reloadGame":
+                    reloadGame();
+                    break;
+                case "reloadShots":
+                    reloadShots();
+                    break;
+                case "reloadShips":
+                    reloadShips();
+                    break;
+                default:
+                    console.warn("Unbekannte WebSocket Nachricht:", event.data);
             }
-            case "reloadGame": reloadGame(); break;
-            case "reloadShots": reloadShots(); break;
-            case "reloadShips": reloadShips(); break;
-            default: alert("non event massage " + e.data)
+        } catch (error) {
+            console.error("Fehler bei der Verarbeitung der WebSocket Nachricht:", error);
         }
     };
+
+    return websocket;
 }

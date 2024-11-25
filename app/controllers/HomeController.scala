@@ -53,7 +53,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     Ok(views.html.menu(title = "isLost")(content = html))
   }
 
-  def addShips1() = Action { implicit request: Request[AnyContent] =>
+  def ship1Grid() = Action { implicit request: Request[AnyContent] =>
     val size = controller.grid.size
     val board = controller.grid.getBoard
     val ships_x : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.x)
@@ -62,7 +62,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     Ok(views.html.shipfield1(title = "Battleship Grid")(size = size)(board = board)(ships_x = ships_x, ships_y = ships_y))
   }
 
-  def addShips2() = Action { implicit request: Request[AnyContent] =>
+  def ship2Grid() = Action { implicit request: Request[AnyContent] =>
     val size = controller.grid.size
     val board = controller.grid.getBoard
     val ships_x : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.x)
@@ -76,6 +76,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val text = "undo"
     val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
     val html: Html = Html(htmlText)
+    publisher.push(event = new ReloadShips())
+
     Ok(views.html.menu(title = "undo")(content = html))
   }
 
@@ -84,6 +86,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val text = "redo"
     val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
     val html: Html = Html(htmlText)
+    publisher.push(event = new ReloadShips())
+
     Ok(views.html.menu(title = "redo")(content = html))
   }
 
@@ -91,6 +95,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val text = controller.autoShips().toString
     val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
     val html: Html = Html(htmlText)
+    publisher.push(event = new ReloadShips())
+
     Ok(views.html.menu(title = "autoShips")(content = html))
   }
 
@@ -114,6 +120,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val text = "loaded"
     val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
     val html: Html = Html(htmlText)
+    publisher.push(event = new ReloadGame())
+
     Ok(views.html.menu(title = "load")(content = html))
   }
 
@@ -130,6 +138,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val text = "reseted"
     val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
     val html: Html = Html(htmlText)
+    publisher.push(event = new ReloadShips())
+
     Ok(views.html.menu(title = "reset")(content = html))
   }
 
@@ -148,6 +158,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
         // Koordinate wird hinzugefügt
         controller.state = controller.player1
         controller.addShot(x, y)
+        publisher.push(event = new ReloadShots())
+
         Ok(Json.obj("status" -> "success", "message" -> s"Player1 Shot added at ($x, $y)"))
       case _ =>
         BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
@@ -169,6 +181,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
         // Koordinate wird hinzugefügt
         controller.state = controller.player2
         controller.addShot(x, y)
+
+        publisher.push(event = new ReloadShots())
         Ok(Json.obj("status" -> "success", "message" -> s"Player2 Shot added at ($x, $y)"))
       case _ =>
         BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
@@ -197,6 +211,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
 
         if (check) {
           controller.set(x1, y1, x2, y2)
+          publisher.push(event = new ReloadShips())
           Ok(Json.obj("status" -> "success", "message" -> s"Player1 Ship added at ($x1, $y1) to ($x2, $y2)"))
         } else {
           BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
@@ -227,6 +242,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
 
         if (check) {
           controller.set(x1, y1, x2, y2)
+          publisher.push(event = new ReloadShips())
+
           Ok(Json.obj("status" -> "success", "message" -> s"Player1 Ship added at ($x1, $y1) to ($x2, $y2)"))
         } else {
           BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
