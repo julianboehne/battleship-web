@@ -21,48 +21,38 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+function addShot(player, x, y) {
+    let url = player === 1 ? 'http://localhost:9000/game/player1/addShot' : 'http://localhost:9000/game/player2/addShot';
 
-function startNewGame() {
-    alert("Starting a new game!");
-}
-
-function saveGame() {
-    alert("Save Game");
-    $.ajax({
-        url: 'http://localhost:9000/game/save',
+    fetch(url, {
         method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ action: "save" }),
-        success: function (response) {
-            console.log("Game saved successfully:", response);
-            if (response.status === "success") {
-                updateGame(response.data);
-            }
+        headers: {
+            'Content-Type': 'application/json'
         },
-        error: function (xhr, status, error) {
-            console.error("Error saving game:", error);
+        body: JSON.stringify({ x: x, y: y })
+    }).then(response => {
+        if (response.ok) {
+            location.reload();
+        } else {
+            console.error("Fehler beim Hinzufügen des Schusses für Spieler " + player);
         }
+    }).catch(error => {
+        console.error("Request-Fehler:", error);
     });
 }
 
-function loadGame() {
-    alert("Load Game");
-    $.ajax({
-        url: 'http://localhost:9000/game/load',
-        method: 'GET',
-        dataType: 'json',
-        success: function (response) {
-            console.log("Game loaded successfully:", response);
-            if (response.status === "success") {
-                updateGame(response.data);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Error loading game:", error);
+
+function isValid(input) {
+    let xhr = new XMLHttpRequest();
+    let url = 'http://localhost:9000/game/isValid/' + input;
+    xhr.open('GET', url, true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            location.reload()
+        } else {
+            console.error("error isValid " + xhr.status);
         }
-    });
+    };
+    xhr.send(JSON.stringify(''));
 }
 
-function exitGame() {
-    alert("Exiting the game!");
-}

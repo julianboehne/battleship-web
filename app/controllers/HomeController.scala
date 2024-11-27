@@ -46,13 +46,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     Ok(views.html.field(title = "Battleship Grid")(size = size)(board = board)(pl1_x_shots = pl1_x_shots, pl1_y_shots = pl1_y_shots, pl2_x_shots = pl2_x_shots, pl2_y_shots = pl2_y_shots))
   }
 
-  def isLost() = Action { implicit request: Request[AnyContent] =>
-    val text = controller.isLost.toString
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    Ok(views.html.menu(title = "isLost")(content = html))
-  }
-
   def ship1Grid() = Action { implicit request: Request[AnyContent] =>
     val size = controller.grid.size
     val board = controller.grid.getBoard
@@ -69,78 +62,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val ships_y : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.y)
 
     Ok(views.html.shipfield2(title = "Battleship Grid")(size = size)(board = board)(ships_x = ships_x, ships_y = ships_y))
-  }
-
-  def undo() = Action { implicit request: Request[AnyContent] =>
-    controller.undo()
-    val text = "undo"
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    publisher.push(event = new ReloadShips())
-
-    Ok(views.html.menu(title = "undo")(content = html))
-  }
-
-  def redo() = Action { implicit request: Request[AnyContent] =>
-    controller.redo()
-    val text = "redo"
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    publisher.push(event = new ReloadShips())
-
-    Ok(views.html.menu(title = "redo")(content = html))
-  }
-
-  def autoShips() = Action { implicit request: Request[AnyContent] =>
-    val text = controller.autoShips().toString
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    publisher.push(event = new ReloadShips())
-
-    Ok(views.html.menu(title = "autoShips")(content = html))
-  }
-
-  def setPlayerName(name: String) = Action { implicit request: Request[AnyContent] =>
-    controller.setPlayerName(name)
-    val text = "new Player: " + name
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    Ok(views.html.menu(title = "setPlayerName")(content = html))
-  }
-
-  def isValid(cords: String) = Action { implicit request: Request[AnyContent] =>
-    val text = controller.isValid(cords).toString
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    Ok(views.html.menu(title = "isValid")(content = html))
-  }
-
-  def load() = Action { implicit request: Request[AnyContent] =>
-    controller.loadGame()
-    val text = "loaded"
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    publisher.push(event = new ReloadGame())
-
-    Ok(views.html.menu(title = "load")(content = html))
-  }
-
-  def save() = Action { implicit request: Request[AnyContent] =>
-    controller.saveGame()
-    val text = "saved"
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    Ok(views.html.menu(title = "save")(content = html))
-  }
-
-  def reset() = Action { implicit request: Request[AnyContent] =>
-    controller.resetGame()
-    val text = "reseted"
-    val htmlText = s"<pre>${text.replace("\n", "<br>")}</pre>"
-    val html: Html = Html(htmlText)
-    publisher.push(event = new ReloadShips())
-
-    Ok(views.html.menu(title = "reset")(content = html))
   }
 
   def player1AddShot(): Action[AnyContent] = Action { implicit request =>

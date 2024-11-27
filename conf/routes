@@ -6,18 +6,19 @@
 # An example controller showing a sample home page
 GET     /                               controllers.HomeController.welcome()
 GET     /game/grid                      controllers.HomeController.getGrid()
-GET     /game/isLost                    controllers.HomeController.isLost()
 GET     /game/addShips1                 controllers.HomeController.ship1Grid()
 GET     /game/addShips2                 controllers.HomeController.ship2Grid()
-GET     /game/undo                      controllers.HomeController.undo()
-GET     /game/redo                      controllers.HomeController.redo()
-GET     /game/autoShips                 controllers.HomeController.autoShips()
-GET     /game/setPlayerName/:name       controllers.HomeController.setPlayerName(name: String)
-GET     /game/isValid/:cords            controllers.HomeController.isValid(cords: String)
-GET     /game/load                      controllers.HomeController.load()
-GET     /game/save                      controllers.HomeController.save()
-GET     /game/reset                     controllers.HomeController.reset()
 GET     /game/shipsReady/:player        controllers.HomeController.shipsReady(player: Int)
+#GET     /game/isLost                    controllers.HomeController.isLost()
+#GET     /game/undo                      controllers.HomeController.undo()
+#GET     /game/redo                      controllers.HomeController.redo()
+#GET     /game/autoShips                 controllers.HomeController.autoShips()
+#GET     /game/setPlayerName/:name       controllers.HomeController.setPlayerName(name: String)
+#GET     /game/isValid/:cords            controllers.HomeController.isValid(cords: String)
+#GET     /game/load                      controllers.HomeController.load()
+#GET     /game/save                      controllers.HomeController.save()
+#GET     /game/reset                     controllers.HomeController.reset()
+
 
 +nocsrf
 POST    /game/player1/addShot           controllers.HomeController.player1AddShot()
