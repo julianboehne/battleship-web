@@ -1,45 +1,29 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Alle Elemente mit data-function finden
-    const navLinks = document.querySelectorAll('[data-function]');
+$(document).ready(function () {
+    // Event Listener für alle Buttons
+    $(".btn").on("click", async function () {
+        // Spieler anhand der Klasse bestimmen
+        const isPlayer1 = $(this).hasClass("player1-shot");
+        const player = isPlayer1 ? 1 : 2;
 
-    // Event Listener für jeden Link hinzufügen
-    navLinks.forEach(link => {
-        link.addEventListener('click', function (event) {
-            event.preventDefault();
+        // x und y Koordinaten aus den data-Attributen
+        const x = $(this).data("x");
+        const y = $(this).data("y");
 
-            // Name der Funktion aus dem data-function Attribut abrufen
-            const functionName = this.getAttribute('data-function');
-
-            // Prüfen, ob die Funktion definiert ist
-            if (typeof window[functionName] === "function") {
-                // Die Funktion ausführen
-                window[functionName]();
-            } else {
-                console.error(`Function "${functionName}" is not defined`);
-            }
-        });
+        try {
+            // AJAX-Request basierend auf dem Spieler
+            await $.ajax({
+                type: "POST",
+                url: `/game/player${player}/addShot`,
+                contentType: "application/json",
+                data: JSON.stringify({ x: x, y: y }),
+            });
+            location.reload(); // Seite aktualisieren nach erfolgreichem Schuss
+        } catch (error) {
+            console.error(`Fehler beim Hinzufügen des Schusses für Spieler ${player}:`, error);
+            reloadShots()
+        }
     });
 });
-
-function addShot(player, x, y) {
-    let url = player === 1 ? 'http://localhost:9000/game/player1/addShot' : 'http://localhost:9000/game/player2/addShot';
-
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ x: x, y: y })
-    }).then(response => {
-        if (response.ok) {
-            location.reload();
-        } else {
-            console.error("Fehler beim Hinzufügen des Schusses für Spieler " + player);
-        }
-    }).catch(error => {
-        console.error("Request-Fehler:", error);
-    });
-}
 
 
 function isValid(input) {

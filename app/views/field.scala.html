@@ -63,7 +63,7 @@
                 @for(col <- 0 until size) {
                   @* Prüfen, ob die aktuelle Position in den Schusskoordinaten von Player 1 enthalten ist *@
                   <td>
-                    <button class="btn btn-outline-primary" onclick="addShot(1, @col, @(row - 1))">
+                    <button class="btn btn-outline-primary player1-shot" data-x="@col" data-y="@(row - 1)">
                     @if(pl1_x_shots.zip(pl1_y_shots).contains((col, row - 1))) {
                       X
                     } else {
@@ -93,7 +93,7 @@
                 @for(col <- 0 until size) {
                   @* Prüfen, ob die aktuelle Position in den Schusskoordinaten von Player 2 enthalten ist *@
                   <td>
-                    <button class="btn btn-outline-secondary" onclick="addShot(2, @col, @(row - 1))">
+                    <button class="btn btn-outline-secondary player2-shot" data-x="@col" data-y="@(row - 1)">
                     @if(pl2_x_shots.zip(pl2_y_shots).contains((col, row - 1))) {
                       X
                     } else {
@@ -115,6 +115,7 @@
     <p><strong>Player 2 X Shots:</strong> @pl2_x_shots.mkString(", ")</p>
     <p><strong>Player 2 Y Shots:</strong> @pl2_y_shots.mkString(", ")</p>*@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap&#64;5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("javascripts/field.js")" type="text/javascript"></script>
 

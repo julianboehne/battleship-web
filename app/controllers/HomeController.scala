@@ -106,6 +106,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
         publisher.push(event = new ReloadShots())
         Ok(Json.obj("status" -> "success", "message" -> s"Player2 Shot added at ($x, $y)"))
       case _ =>
+        publisher.push(event = new ReloadShots())
         BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
     }
   }

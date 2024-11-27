@@ -44,17 +44,6 @@ async function addShip(player, cords1, cords2) {
             data: JSON.stringify({ first: cords1, second: cords2 }),
         });
 
-        // // Check if ships are ready by awaiting the result of shipsReady
-        // const isReady = await shipsReady(player);
-        //
-        // // Redirect based on readiness status
-        // if (isReady) {
-        //     if (player === 1) {
-        //         window.location.href = '/game/addShips2';
-        //     } else {
-        //         window.location.href = '/game/grid';
-        //     }
-        // }
     } catch (error) {
         console.error("Error in addShip:", error);
         reloadShips();
