@@ -104,10 +104,19 @@ function reloadShots() {
     location.reload();
 }
 
-function reloadShips() {
-    location.reload();
-    // ToDo richtige Seite laden
-    // location.href = 'http://localhost:9000/game/addShips1';
+async function reloadShips() {
+
+    if (await shipsReady(1) && !await shipsReady(2)) {
+        location.href = '/game/addShips2';
+    } else if (!await shipsReady(1) && await shipsReady(2)) {
+        location.href = '/game/addShips1';
+    } else if (await shipsReady(1) && await shipsReady(2)) {
+        location.href = '/game/grid';
+    } else {
+        location.href = '/game/addShips1';
+    }
+
+
 }
 
 
