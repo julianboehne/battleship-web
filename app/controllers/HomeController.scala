@@ -36,6 +36,55 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     Ok(views.html.welcome(title = "Battleship"))
   }
 
+  def ship1GridJson() = Action { implicit request: Request[AnyContent] =>
+    val size = controller.grid.size
+    val board = controller.grid.getBoard
+    val ships_x: Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.x)
+    val ships_y: Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.y)
+
+    Ok(Json.obj(
+      "title" -> "Battleship Grid",
+      "size" -> size,
+      "board" -> board,
+      "ships_x" -> ships_x,
+      "ships_y" -> ships_y
+    ))
+  }
+
+  def ship2GridJson() = Action { implicit request: Request[AnyContent] =>
+    val size = controller.grid.size
+    val board = controller.grid.getBoard
+    val ships_x: Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.x)
+    val ships_y: Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.y)
+
+    Ok(Json.obj(
+      "title" -> "Battleship Grid",
+      "size" -> size,
+      "board" -> board,
+      "ships_x" -> ships_x,
+      "ships_y" -> ships_y
+    ))
+  }
+
+  def getGridJson() = Action { implicit request: Request[AnyContent] =>
+    val size = controller.grid.size
+    val board = controller.grid.getBoard
+    val pl1_x_shots = controller.player1.grid.shots.X
+    val pl1_y_shots = controller.player1.grid.shots.Y
+    val pl2_x_shots = controller.player2.grid.shots.X
+    val pl2_y_shots = controller.player2.grid.shots.Y
+
+    Ok(Json.obj(
+      "title" -> "Battleship Grid",
+      "size" -> size,
+      "board" -> board,
+      "pl1_x_shots" -> pl1_x_shots,
+      "pl1_y_shots" -> pl1_y_shots,
+      "pl2_x_shots" -> pl2_x_shots,
+      "pl2_y_shots" -> pl2_y_shots
+    ))
+  }
+
   def getGrid() = Action { implicit request: Request[AnyContent] =>
     val size = controller.grid.size
     val board = controller.grid.getBoard
@@ -54,6 +103,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
 
     Ok(views.html.shipfield1(title = "Battleship Grid")(size = size)(board = board)(ships_x = ships_x, ships_y = ships_y))
   }
+
 
   def ship2Grid() = Action { implicit request: Request[AnyContent] =>
     val size = controller.grid.size

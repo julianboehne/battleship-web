@@ -19,6 +19,10 @@ GET     /game/shipsReady/:player        controllers.HomeController.shipsReady(pl
 #GET     /game/save                      controllers.HomeController.save()
 #GET     /game/reset                     controllers.HomeController.reset()
 
+GET     /game/gridjson                     controllers.HomeController.getGridJson()
+GET     /game/addShips1json                 controllers.HomeController.ship1GridJson()
+GET     /game/addShips2json                 controllers.HomeController.ship2GridJson()
+
 
 +nocsrf
 POST    /game/player1/addShot           controllers.HomeController.player1AddShot()
