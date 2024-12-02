@@ -43,7 +43,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val ships_y: Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.y)
 
     Ok(Json.obj(
-      "title" -> "Battleship Grid",
+      "title" -> "Battleship Shipfield",
       "size" -> size,
       "board" -> board,
       "ships_x" -> ships_x,
@@ -58,7 +58,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val ships_y: Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.y)
 
     Ok(Json.obj(
-      "title" -> "Battleship Grid",
+      "title" -> "Battleship Shipfield",
       "size" -> size,
       "board" -> board,
       "ships_x" -> ships_x,
@@ -96,22 +96,22 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
   }
 
   def ship1Grid() = Action { implicit request: Request[AnyContent] =>
-    val size = controller.grid.size
-    val board = controller.grid.getBoard
-    val ships_x : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.x)
-    val ships_y : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.y)
+//    val size = controller.grid.size
+//    val board = controller.grid.getBoard
+//    val ships_x : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.x)
+//    val ships_y : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.y)
 
-    Ok(views.html.shipfield1(title = "Battleship Grid")(size = size)(board = board)(ships_x = ships_x, ships_y = ships_y))
+    Ok(views.html.shipfield1(title = "Battleship Grid"))
   }
 
 
   def ship2Grid() = Action { implicit request: Request[AnyContent] =>
-    val size = controller.grid.size
-    val board = controller.grid.getBoard
-    val ships_x : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.x)
-    val ships_y : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.y)
+//    val size = controller.grid.size
+//    val board = controller.grid.getBoard
+//    val ships_x : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.x)
+//    val ships_y : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.y)
 
-    Ok(views.html.shipfield2(title = "Battleship Grid")(size = size)(board = board)(ships_x = ships_x, ships_y = ships_y))
+    Ok(views.html.shipfield2(title = "Battleship Grid"))
   }
 
   def player1AddShot(): Action[AnyContent] = Action { implicit request =>

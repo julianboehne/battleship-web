@@ -1,4 +1,4 @@
-@(title: String)(size: Int)(board: Vector[String])(ships_x: Vector[Int], ships_y: Vector[Int])
+@(title: String)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,47 +17,35 @@
 
     <h1>Battleship Shipfield</h1>
 
-    <table>
-      <tr>
-        <td>
-            <!-- Spielfeld 1 -->
-          <h2 class="text-primary">Player 1</h2>
-          <table id="player1-board">
-            <tr>
-              <td></td>
-              @for(i <- 0 until size) {
-                <td>@(('A'.toInt + i).toChar)</td>
-              }
-            </tr>
-            @for(row <- 1 to size) {
-              <tr>
-                <td>@row</td>
-                @for(col <- 0 until size) {
-                  <td>
-                    <button class="shipButton1 btn btn-outline-primary">
-                    @if(ships_x.zip(ships_y).contains((col+1, row))) {
-                      🚢
-                    } else {
-                      @board((row - 1) * size + col)
-                    }
-                    </button>
-                  </td>
-                }
-              </tr>
-            }
-          </table>
-          <div id="app">
-            Ships_x: {{ ships_x }}
-            Ships_y: {{ ships_y }}
-            Size: {{ size }}
-            Title: {{ title }}
-            Board: {{ board }}
-          </div>
-        </td>
+    <div id="app">
+        <!-- Vue.js-verwaltetes Spielfeld -->
+      <h2 class="text-primary">{{ title }}</h2>
+      <table id="player1-board">
+        <tr>
+          <td></td>
+          <td v-for="(letter, index) in boardLetters" :key="index">{{ letter }}</td>
+        </tr>
+        <tr v-for="(row, rowIndex) in size" :key="rowIndex">
+          <td>{{ row }}</td>
+          <td v-for="(col, colIndex) in size" :key="colIndex">
+            <button
+            class="shipButton1 btn btn-outline-primary"
+            @@click="placeShip(row, col)"
+            >
+            <span v-if="isShipAtPosition(col, row)">🚢</span>
+            <span v-else>{{ getCellContent(col, row) }}</span>
+            </button>
+          </td>
+        </tr>
+      </table>
+      Ships_x: {{ ships_x }}
+      Ships_y: {{ ships_y }}
+      Size: {{ size }}
+      Title: {{ title }}
+      Board: {{ board }}
+    </div>
 
 
-      </tr>
-    </table>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap&#64;5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -79,6 +67,11 @@
                   ships_y: [],
                 };
               },
+              computed: {
+                boardLetters() {
+                  return Array.from({ length: this.size }, (_, i) => String.fromCharCode(65 + i));
+                },
+              },
               mounted() {
                 this.fetchGameData();
               },
@@ -96,8 +89,38 @@
                   } catch (error) {
                     console.error('Error fetching game data:', error);
                   }
-                }
-              }
+                },
+                isShipAtPosition(col, row) {
+                  for (let i = 0; i < this.ships_x.length; i++) {
+                    if (this.ships_x[i] === col && this.ships_y[i] === row) {
+                      return true;
+                    }
+                  }
+                  return false;
+                },
+                getCellContent(col, row) {
+                  const index = (row - 1) * this.size + (col - 1);
+                  return this.board[index] !== '.' ? this.board[index] : '';
+                },
+                async placeShip(row, col) {
+                  try {
+                    const response = await fetch(`/game/player1/addShip`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ row, col }),
+                    });
+
+                    const data = await response.json();
+                    console.log('Ship placed:', data);
+                    this.ships_x.push(col);
+                    this.ships_y.push(row);
+                  } catch (error) {
+                    console.error('Error placing ship:', error);
+                  }
+                },
+              },
             });
 
             app.mount('#app');
