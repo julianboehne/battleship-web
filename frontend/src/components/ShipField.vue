@@ -1,37 +1,87 @@
 <template>
-  <div class="ship-field">
-    <button
-        v-for="(button, index) in shipButtons"
-        :key="index"
-        :class="['ship-button', `player-${currentPlayer}`]"
-        @click="handleShipPlacement(button)"
-    >
-      {{ button }}
-    </button>
+  <div id="app">
+    <h1>{{ title }}</h1>
+    <h2 class="text-primary">Player 1</h2>
+    <table id="player1-board">
+      <tr>
+        <td></td>
+        <td v-for="(letter, index) in boardLetters" :key="index">{{ letter }}</td>
+      </tr>
+      <tr v-for="(row, rowIndex) in size" :key="rowIndex">
+        <td>{{ rowIndex + 1 }}</td>
+        <td v-for="(col, colIndex) in size" :key="colIndex">
+          <button
+              class="shipButton1 btn btn-outline-primary"
+              @click="placeShip(rowIndex + 1, colIndex + 1)"
+          >
+            <span v-if="isShipAtPosition(colIndex + 1, rowIndex + 1)">🚢</span>
+            <span v-else>{{ getCellContent(colIndex + 1, rowIndex + 1) }}</span>
+          </button>
+        </td>
+      </tr>
+    </table>
+    Ships_x: {{ ships_x }}
+    Ships_y: {{ ships_y }}
+    Size: {{ size }}
+    Title: {{ title }}
+    Board: {{ board }}
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import '@/stylesheets/bootstrap.css'
+import '@/stylesheets/main.css'
+
+
+import {ref, onMounted, computed} from 'vue'
 import { gameService } from '@/services/api'
 
 const currentPlayer = ref(1)
 const input1 = ref('')
 const input2 = ref('')
-let shipButtons = ref([])// Wird später mit dem "board" initialisiert
+let board = ref([])// Wird später mit dem "board" initialisiert
+const title = ref('')
+const size = ref(0)
+const ships_x = ref([])
+const ships_y = ref([])
 
-const handleShipPlacement = async (button) => {
-  if (input1.value === '' && input2.value === '') {
-    input1.value = button.text
-    button.text = '🚢'
-  } else {
-    input2.value = button.text
-    button.text = '🚢'
-    await gameService.addShip(currentPlayer.value, input1.value, input2.value)
-    input1.value = ''
-    input2.value = ''
-    await checkGameState()
-    await fetchGameData() // Aktualisiert die Daten nach jedem Button-Klick
+const boardLetters = computed(() => {
+  return Array.from({ length: size.value }, (_, i) =>
+      String.fromCharCode(65 + i)
+  );
+})
+
+const isShipAtPosition = (col, row) => {
+  for (let i = 0; i < ships_x.value.length; i++) {
+    if (ships_x.value[i] === col && ships_y.value[i] === row) {
+      return true;
+    }
+  }
+  return false;
+}
+
+const getCellContent = (col, row) => {
+  const index = (row - 1) * size.value + (col - 1);
+  return board.value[index] !== '.' ? board.value[index] : '';
+}
+
+const placeShip = async (row, col) => {
+  try {
+    const response = await fetch(`/game/player1/addShip`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ row, col }),
+    });
+
+    const data = await response.json();
+    console.log('Ship placed:', data);
+    ships_x.value.push(col);
+    ships_y.value.push(row);
+  } catch (error) {
+    console.error('Error placing ship:', error);
   }
 }
 
@@ -40,11 +90,11 @@ const fetchGameData = async () => {
     const response = await fetch('http://localhost:9000/game/addShips1json');
     const data = await response.json();
 
-    // this.title = data.title;
-    // this.size = data.size;
-    shipButtons.value = data.board;
-    // this.ships_x = data.ships_x;
-    // this.ships_y = data.ships_y;
+    title.value = data.title;
+    size.value = data.size;
+    board.value = data.board;
+    ships_x.value = data.ships_x;
+    ships_y.value = data.ships_y;
   } catch (error) {
     console.error('Error fetching game data:', error);
   }
@@ -65,18 +115,3 @@ onMounted(() => {
   fetchGameData() // Wird beim Mounten ausgeführt
 })
 </script>
-
-<style scoped>
-.ship-field {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr); /* Gitter mit 10 Spalten */
-  gap: 4px;
-}
-
-.ship-button {
-  padding: 8px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  background-color: #f9f9f9;
-}
-</style>
