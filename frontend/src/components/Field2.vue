@@ -87,7 +87,7 @@ const addShipToBoard = async (input1, input2) => {
     formData.append('first', input1);
     formData.append('second', input2);
 
-    const response = await fetch('http://localhost:9000/game/player1/addShip', {
+    const response = await fetch('http://localhost:9000/game/player2/addShip', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
