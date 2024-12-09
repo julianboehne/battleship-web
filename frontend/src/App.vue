@@ -9,8 +9,17 @@ import NavBar from "@/components/NavBar.vue";
 <template>
   <div class="game">
     <NavBar />
-    <Field1 />
-<!--    <Field2 />-->
+    <h1>Battelship Game</h1>
+    <table>
+      <tr>
+        <td class="Spielfeld">
+          <Field1 />
+        </td>
+        <td class="Spielfeld">
+          <Field2 />
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 

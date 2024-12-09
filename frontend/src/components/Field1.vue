@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>{{ title }}</h1>
     <h2 class="text-primary">Player 1</h2>
     <table id="player1-board">
       <tr>
@@ -39,7 +38,6 @@ const input2 = ref('')
 const board = ref([
   { text: ""},
 ]);
-const title = ref('')
 const size = ref(0)
 const ships_x = ref([])
 const ships_y = ref([])
@@ -110,7 +108,6 @@ const fetchGameData = async () => {
     const response = await fetch('http://localhost:9000/game/addShips1json');
     const data = await response.json();
 
-    title.value = data.title;
     size.value = data.size;
     board.value = Array.from({ length: data.size * data.size }, (_, index) => {
       const value = data.board[index];
