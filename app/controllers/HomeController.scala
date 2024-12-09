@@ -48,7 +48,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
       "board" -> board,
       "ships_x" -> ships_x,
       "ships_y" -> ships_y
-    ))
+    )).withHeaders(
+      "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+    )
   }
 
   def ship2GridJson() = Action { implicit request: Request[AnyContent] =>

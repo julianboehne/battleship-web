@@ -1,0 +1,134 @@
+/* Grundlegendes Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+/* Spielertitel */
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.Spielfeld {
+    padding: 0 50px 50px 50px;
+}
+
+/* Spielfeld-Styling */
+table {
+    border-radius: 8px;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td, th {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-sizing: border-box;
+
+}
+
+/* Zeilen- und Spaltenbezeichnungen */
+td:first-child, th {
+    font-weight: bold;
+}
+
+tr:first-child td {
+    font-weight: bold;
+}
+
+/* Basis-Styling für die Zellen */
+td {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    position: relative;
+}
+
+/* Button-Styling */
+td button {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+#gamerules {
+    width: 750px;
+    margin: 100px auto;
+}
+
+#startbutton {
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    display: flex;
+    margin: 25px auto;
+}
+
+#playerName1Input{
+    margin: 10px auto;
+    width: 250px;
+}
+
+#playerName2Input{
+    margin: 10px auto;
+    width: 250px;
+}
+
+@media (max-width: 1080px) {
+    .Spielfeld {
+        display: block;
+        width: 100%;
+        margin-bottom: max(20vh, 250px);
+    }
+
+    .Spielfeld table {
+        margin: 0 auto;
+    }
+
+    .Spielfeld td, .Spielfeld th {
+        min-width: 20px;
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+
+    .Spielfeld td button {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
+    }
+}
+
+.inactive-field {
+    filter: blur(2px);
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.inactive-field button {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
