@@ -15,16 +15,12 @@
               @click="placeShip(rowIndex + 1, colIndex + 1)"
           >
             <span v-if="isShipAtPosition(colIndex + 1, rowIndex + 1)">🚢</span>
-            <span v-else>{{ getCellContent(colIndex + 1, rowIndex + 1) }}</span>
+            <span v-else="board[(rowIndex) * size + (colIndex)].text === '🚢'">🚢</span>
+            <span v-else>{{ getCellContent(colIndex + 1, rowIndex + 1).text }}</span>
           </button>
         </td>
       </tr>
     </table>
-    Ships_x: {{ ships_x }}
-    Ships_y: {{ ships_y }}
-    Size: {{ size }}
-    Title: {{ title }}
-    Board: {{ board }}
 
   </div>
 </template>
@@ -40,7 +36,9 @@ import { gameService } from '@/services/api'
 const currentPlayer = ref(1)
 const input1 = ref('')
 const input2 = ref('')
-let board = ref([])// Wird später mit dem "board" initialisiert
+const board = ref([
+  { text: ""},
+]);
 const title = ref('')
 const size = ref(0)
 const ships_x = ref([])
@@ -68,22 +66,44 @@ const getCellContent = (col, row) => {
 
 const placeShip = async (row, col) => {
   try {
-    const response = await fetch(`/game/player1/addShip`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ row, col }),
-    });
-
-    const data = await response.json();
-    console.log('Ship placed:', data);
-    ships_x.value.push(col);
-    ships_y.value.push(row);
+    if (input1.value === "" && input2.value === "") {
+      input1.value = board.value[(row - 1) * size.value + (col - 1)].text;
+      board.value[(row - 1) * size.value + (col - 1)].text = '🚢';
+    } else {
+      input2.value = board.value[(row - 1) * size.value + (col - 1)].text;
+      await addShipToBoard(input1.value, input2.value);
+      input1.value = "";
+      input2.value = "";
+    }
   } catch (error) {
     console.error('Error placing ship:', error);
   }
-}
+};
+
+// Funktion zum Hinzufügen des Schiffs
+const addShipToBoard = async (input1, input2) => {
+  try {
+    const formData = new URLSearchParams();
+    formData.append('first', input1);
+    formData.append('second', input2);
+
+    const response = await fetch('http://localhost:9000/game/player1/addShip', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData,
+      mode: 'no-cors', // Beibehalten, damit es funktioniert
+    });
+
+    // Da no-cors keine Antwort erlaubt, kannst du die Antwort nicht prüfen
+    console.log('Request sent (no-cors). Check server for results.');
+    await fetchGameData()
+  } catch (error) {
+    console.error('Error placing ship:', error);
+    await fetchGameData()
+  }
+};
 
 const fetchGameData = async () => {
   try {
@@ -92,7 +112,10 @@ const fetchGameData = async () => {
 
     title.value = data.title;
     size.value = data.size;
-    board.value = data.board;
+    board.value = Array.from({ length: data.size * data.size }, (_, index) => {
+      const value = data.board[index];
+      return { text: value }; // Weise jedem Feld den entsprechenden Wert zu
+    });
     ships_x.value = data.ships_x;
     ships_y.value = data.ships_y;
   } catch (error) {
@@ -114,4 +137,6 @@ const checkGameState = async () => {
 onMounted(() => {
   fetchGameData() // Wird beim Mounten ausgeführt
 })
+
+
 </script>

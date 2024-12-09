@@ -67,7 +67,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
       "board" -> board,
       "ships_x" -> ships_x,
       "ships_y" -> ships_y
-    ))
+    )).withHeaders(
+      "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+    )
   }
 
   def getGridJson() = Action { implicit request: Request[AnyContent] =>
@@ -86,7 +90,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
       "pl1_y_shots" -> pl1_y_shots,
       "pl2_x_shots" -> pl2_x_shots,
       "pl2_y_shots" -> pl2_y_shots
-    ))
+    )).withHeaders(
+      "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+      "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+    )
   }
 
   def getGrid() = Action { implicit request: Request[AnyContent] =>
@@ -100,21 +108,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
   }
 
   def ship1Grid() = Action { implicit request: Request[AnyContent] =>
-//    val size = controller.grid.size
-//    val board = controller.grid.getBoard
-//    val ships_x : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.x)
-//    val ships_y : Vector[Int] = controller.player1.grid.ships.shipsVector.flatMap(_.y)
-
     Ok(views.html.shipfield1(title = "Battleship Grid"))
   }
 
 
   def ship2Grid() = Action { implicit request: Request[AnyContent] =>
-//    val size = controller.grid.size
-//    val board = controller.grid.getBoard
-//    val ships_x : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.x)
-//    val ships_y : Vector[Int] = controller.player2.grid.ships.shipsVector.flatMap(_.y)
-
     Ok(views.html.shipfield2(title = "Battleship Grid"))
   }
 
@@ -134,10 +132,20 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
         controller.state = controller.player1
         controller.addShot(x, y)
         publisher.push(event = new ReloadShots())
+        println("Test")
 
-        Ok(Json.obj("status" -> "success", "message" -> s"Player1 Shot added at ($x, $y)"))
+        Ok(Json.obj("status" -> "success", "message" -> s"Player1 Shot added at ($x, $y)")).withHeaders(
+          "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+          "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+        )
       case _ =>
-        BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
+        println("Test2")
+        BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates")).withHeaders(
+          "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+          "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+        )
     }
   }
 
@@ -158,10 +166,18 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
         controller.addShot(x, y)
 
         publisher.push(event = new ReloadShots())
-        Ok(Json.obj("status" -> "success", "message" -> s"Player2 Shot added at ($x, $y)"))
+        Ok(Json.obj("status" -> "success", "message" -> s"Player2 Shot added at ($x, $y)")).withHeaders(
+          "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+          "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+        )
       case _ =>
         publisher.push(event = new ReloadShots())
-        BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
+        BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates")).withHeaders(
+          "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+          "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+        )
     }
   }
 
@@ -175,6 +191,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val cords2 = request.body.asFormUrlEncoded.flatMap(_.get("second").flatMap(_.headOption)).map(_.toString)
       .orElse(request.body.asJson.flatMap(json => (json \ "second").asOpt[String]))
       .orElse(request.getQueryString("second").map(_.toString))
+    println(request.body.asJson)
+
+
+    println(cords2)
 
     (cords1, cords2) match {
       case (Some(first), Some(second)) =>
@@ -187,10 +207,18 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
 
         if (check) {
           controller.set(x1, y1, x2, y2)
-          publisher.push(event = new ReloadShips())
-          Ok(Json.obj("status" -> "success", "message" -> s"Player1 Ship added at ($x1, $y1) to ($x2, $y2)"))
+//          publisher.push(event = new ReloadShips())
+          Ok(Json.obj("status" -> "success", "message" -> s"Player1 Ship added at ($x1, $y1) to ($x2, $y2)")).withHeaders(
+            "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+            "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+          )
         } else {
-          BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
+          BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates")).withHeaders(
+            "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+            "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+          )
         }
     }
   }
@@ -222,7 +250,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
 
           Ok(Json.obj("status" -> "success", "message" -> s"Player1 Ship added at ($x1, $y1) to ($x2, $y2)"))
         } else {
-          BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates"))
+          BadRequest(Json.obj("status" -> "error", "message" -> "Invalid or missing coordinates")).withHeaders(
+            "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
+            "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers" -> "Content-Type, Accept, X-Requested-With, Authorization"
+          )
         }
     }
   }

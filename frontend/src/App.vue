@@ -1,12 +1,14 @@
 <script setup>
-import ShipField from '@/components/ShipField.vue'
+import Field1 from '@/components/Field1.vue'
+import Field2 from '@/components/Field2.vue'
 
 </script>
 
 <!-- App.vue oder eine andere übergeordnete Komponente -->
 <template>
   <div class="game">
-    <ShipField />
+    <Field1 />
+<!--    <Field2 />-->
   </div>
 </template>
 
