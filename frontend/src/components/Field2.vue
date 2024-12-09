@@ -105,7 +105,7 @@ const addShipToBoard = async (input1, input2) => {
 
 const fetchGameData = async () => {
   try {
-    const response = await fetch('http://localhost:9000/game/addShips1json');
+    const response = await fetch('http://localhost:9000/game/addShips2json');
     const data = await response.json();
 
     size.value = data.size;
