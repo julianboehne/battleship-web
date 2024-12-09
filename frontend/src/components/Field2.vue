@@ -2,25 +2,28 @@
   <div id="app">
     <h2 class="text-secondary">Player 2</h2>
     <table id="player1-board">
-      <tr>
-        <td></td>
-        <td v-for="(letter, index) in boardLetters" :key="index">{{ letter }}</td>
-      </tr>
-      <tr v-for="(row, rowIndex) in size" :key="rowIndex">
-        <td>{{ rowIndex + 1 }}</td>
-        <td v-for="(col, colIndex) in size" :key="colIndex">
-          <button
-              class="shipButton1 btn btn-outline-secondary"
-              @click="placeShip(rowIndex + 1, colIndex + 1)"
-          >
-            <span v-if="isShipAtPosition(colIndex + 1, rowIndex + 1)">🚢</span>
-            <span v-else="board[(rowIndex) * size + (colIndex)].text === '🚢'">🚢</span>
-            <span v-else>{{ getCellContent(colIndex + 1, rowIndex + 1).text }}</span>
-          </button>
-        </td>
-      </tr>
+      <thead>
+        <tr>
+          <td></td>
+          <td v-for="(letter, index) in boardLetters" :key="index">{{ letter }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(row, rowIndex) in size" :key="rowIndex">
+          <td>{{ rowIndex + 1 }}</td>
+          <td v-for="(col, colIndex) in size" :key="colIndex">
+            <button
+                class="shipButton1 btn btn-outline-secondary"
+                @click="placeShip(rowIndex + 1, colIndex + 1)"
+            >
+              <span v-if="isShipAtPosition(colIndex + 1, rowIndex + 1)">🚢</span>
+              <span v-else="board[(rowIndex) * size + (colIndex)].text === '🚢'">🚢</span>
+              <span v-else>{{ getCellContent(colIndex + 1, rowIndex + 1).text }}</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
-
   </div>
 </template>
 
