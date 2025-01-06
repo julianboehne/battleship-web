@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: play.Dockerfile
+    ports:
+      - "9000:9000"
+    environment:
+      - JAVA_OPTS=-Xms512M -Xmx1024M
+    restart: always
