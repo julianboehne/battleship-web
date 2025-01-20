@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "homepage": "https://julianboehne.github.io/battleship-web/",
+  "homepage": "http://localhost:80",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
