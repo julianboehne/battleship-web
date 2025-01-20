@@ -4,7 +4,7 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 export const gameService = {
     async addShip(player, cords1, cords2) {
         try {
-            const response = await fetch(`http://localhost:9000/game/player${player}/addShip`, {
+            const response = await fetch(`https://parental-annabell-mindwork-6d15eec4.koyeb.app/game/player${player}/addShip`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

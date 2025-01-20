@@ -88,7 +88,7 @@ const addShipToBoard = async (input1, input2) => {
     formData.append('first', input1);
     formData.append('second', input2);
 
-    const response = await fetch('http://localhost:9000/game/player1/addShip', {
+    const response = await fetch('https://parental-annabell-mindwork-6d15eec4.koyeb.app/game/player1/addShip', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -108,7 +108,7 @@ const addShipToBoard = async (input1, input2) => {
 
 const fetchGameData = async () => {
   try {
-    const response = await fetch('http://localhost:9000/game/addShips1json');
+    const response = await fetch('https://parental-annabell-mindwork-6d15eec4.koyeb.app/game/addShips1json');
     const data = await response.json();
 
     size.value = data.size;
