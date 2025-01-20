@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/battleship-web/sw.js', { scope: '/battleship-web/' })})}
