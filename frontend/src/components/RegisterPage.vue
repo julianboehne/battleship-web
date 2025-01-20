@@ -2,12 +2,12 @@
   <div id="box">
     <h1>Register or Sign in</h1>
     <form>
-      <input type="text" placeholder="Email" v-model="email" />
-      <input type="password" placeholder="Password" v-model="password" />
+      <input type="text" class="form-control" placeholder="Email" v-model="email" />
+      <input type="password" class="form-control" placeholder="Password" v-model="password" />
 
       <div id="btn-group">
-        <button type="button" @click="register">Register</button>
-        <button type="button" @click="login">Sign in</button>
+        <button type="button" class="btn btn-success" @click="register">Register</button>
+        <button type="button" class="btn btn-success" @click="login">Sign in</button>
       </div>
     </form>
   </div>
