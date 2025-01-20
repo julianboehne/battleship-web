@@ -182,8 +182,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
   }
 
   def player1AddShip(): Action[AnyContent] = Action { implicit request =>
-
-    // Versuch, die Koordinaten aus verschiedenen Eingabemethoden zu lesen
     val cords1 = request.body.asFormUrlEncoded.flatMap(_.get("first").flatMap(_.headOption)).map(_.toString)
       .orElse(request.body.asJson.flatMap(json => (json \ "first").asOpt[String]))
       .orElse(request.getQueryString("first").map(_.toString))
@@ -191,10 +189,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
     val cords2 = request.body.asFormUrlEncoded.flatMap(_.get("second").flatMap(_.headOption)).map(_.toString)
       .orElse(request.body.asJson.flatMap(json => (json \ "second").asOpt[String]))
       .orElse(request.getQueryString("second").map(_.toString))
-    println(request.body.asJson)
-
-
-    println(cords2)
 
     (cords1, cords2) match {
       case (Some(first), Some(second)) =>
@@ -204,10 +198,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, i
         val x2 =controller.getX(second)
         val y2 = controller.getY(second)
         val check = controller.checkShip(x1, y1, x2, y2)
-
         if (check) {
           controller.set(x1, y1, x2, y2)
-//          publisher.push(event = new ReloadShips())
           Ok(Json.obj("status" -> "success", "message" -> s"Player1 Ship added at ($x1, $y1) to ($x2, $y2)")).withHeaders(
             "Access-Control-Allow-Origin" -> "*",  // Erlaube alle Ursprünge oder spezifische URL
             "Access-Control-Allow-Methods" -> "GET, POST, OPTIONS",

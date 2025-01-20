@@ -5,10 +5,9 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { VitePWA } from 'vite-plugin-pwa';
 
-
-// https://vite.dev/config/
+// // https://vite.dev/config/
 // export default defineConfig({
-//   base: '/',
+//   base: '/battleship-web/',
 //   plugins: [
 //     vue(),
 //     vueDevTools(),
@@ -22,6 +21,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 
 export default defineConfig({
+  base: '/battleship-web/',
   plugins: [
     vue(),
     vueDevTools(),
