@@ -4,17 +4,20 @@ import Field1 from '@/components/Field1.vue'
 import Field2 from '@/components/Field2.vue'
 import NavBar from "@/components/NavBar.vue";
 import Welcome from "@/components/Welcome.vue";
+import RegisterPage from "@/components/RegisterPage.vue";
 import '@/stylesheets/bootstrap.css'
 import '@/stylesheets/main.css'
 
-const showWelcome = ref(true)
-const installPrompt = ref(null) // Ref für das Installationsereignis
-const showInstallButton = ref(false) // Ref zur Steuerung der Schaltflächenanzeige
+// Refs für den Zustand
+const showWelcome = ref(false); // Ob die Welcome-Seite angezeigt wird
+const isAuthenticated = ref(false); // Authentifizierungsstatus
+const installPrompt = ref(null); // Ref für das Installationsereignis
+const showInstallButton = ref(false); // Ref zur Steuerung der Schaltflächenanzeige
 
 // Funktion für den Start des Spiels
 const handleStartGame = () => {
-  showWelcome.value = false
-}
+  showWelcome.value = false;
+};
 
 // Funktion zur Behandlung der Installation
 const handleInstall = async () => {
@@ -29,14 +32,14 @@ const handleInstall = async () => {
     installPrompt.value = null; // Ereignis nach der Verwendung zurücksetzen
     showInstallButton.value = false; // Schaltfläche ausblenden
   }
-}
+};
 
 // Listener für "beforeinstallprompt" hinzufügen
 onMounted(() => {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault(); // Verhindere die Standardanzeige des Installations-Prompts
     installPrompt.value = e; // Speichere das Ereignis
-    showInstallButton.value = true; // Zeige die Schaltfläche an
+    showInstallButton.value = true; // Schaltfläche anzeigen
   });
 
   // Optionale Cleanup-Funktion
@@ -44,14 +47,24 @@ onMounted(() => {
     window.removeEventListener('beforeinstallprompt', () => {});
   };
 });
+
+// Funktion zur Aktualisierung des Authentifizierungsstatus
+const handleLoginSuccess = () => {
+  isAuthenticated.value = true;
+  showWelcome.value = true;
+};
 </script>
 
 <template>
   <div class="game">
     <NavBar />
-    <Welcome v-if="showWelcome" @start-game="handleStartGame" />
+    <!-- Zeige RegisterPage, wenn der Benutzer nicht authentifiziert ist -->
+    <RegisterPage v-if="!isAuthenticated" @login-success="handleLoginSuccess" />
+    <!-- Zeige Welcome-Seite, wenn authentifiziert -->
+    <Welcome v-else-if="showWelcome" @start-game="handleStartGame" />
+    <!-- Zeige das Spielfeld, wenn das Spiel gestartet wurde -->
     <div v-else>
-      <h1>Battelship Game</h1>
+      <h1>Battleship Game</h1>
       <table>
         <tbody>
         <tr>

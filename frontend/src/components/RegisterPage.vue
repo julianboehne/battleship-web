@@ -6,12 +6,13 @@
       <input type="password" placeholder="Password" v-model="password" />
 
       <div id="btn-group">
-        <button @click="register">Register</button>
-        <button @click="login">Sign in</button>
+        <button type="button" @click="register">Register</button>
+        <button type="button" @click="login">Sign in</button>
       </div>
     </form>
   </div>
 </template>
+
 <style scoped>
 #box {
   display: flex;
@@ -34,9 +35,11 @@ button {
   width: calc(50% - 10px);
 }
 </style>
+
 <script>
 import { auth } from '../firebaseConfig'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+
 export default {
   name: 'RegisterPage',
   data() {
@@ -49,24 +52,22 @@ export default {
     register() {
       createUserWithEmailAndPassword(auth, this.email, this.password)
           .then((data) => {
-            console.log(data)
             console.log('Successfully registered!');
-            this.$router.push('/')
+            this.$emit('login-success'); // Event nach erfolgreichem Login auslösen
           })
           .catch(error => {
-            console.log(error.code)
+            console.error(error.code);
             alert(error.message);
           });
     },
     login() {
       signInWithEmailAndPassword(auth, this.email, this.password)
           .then((data) => {
-            console.log(data);
             console.log('Successfully logged in!');
-            this.$router.push('/');
+            this.$emit('login-success'); // Event nach erfolgreichem Login auslösen
           })
           .catch(error => {
-            console.log(error.code);
+            console.error(error.code);
             alert(error.message);
           });
     }
