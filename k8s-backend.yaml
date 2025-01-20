@@ -28,6 +28,7 @@ metadata:
 spec:
   selector:
     app: backend
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 9000
